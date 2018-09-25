@@ -1,0 +1,88 @@
+package mysetpackage;
+
+public class OtherSetUnsorted<E> extends AbstractOtherSet<E> {
+	/**
+     * Constructs an empty list.
+     */
+    public OtherSetUnsorted() {
+        super();
+    }
+
+    /**
+     * @see mylistpackage.MyList#insert(java.lang.Object)
+     */
+    @Override
+    public void insert(E value) {
+    		ListNode<E> valueNode = new ListNode<E>(value);
+    		if (front == null && back == null) {
+    			front = valueNode;
+    			back = valueNode;
+    		} else {
+    			if (!contains(value)) {
+    				back.next = valueNode;
+    				back = valueNode;
+    			}
+    		}
+    }
+    
+    /**
+     * @see mylistpackage.MyList#remove(java.lang.Object)
+     */
+    @Override
+    public void remove(E value) {
+    	if (front != null) {				    // if the list is not empty
+    		if (value.equals(front.data)) {                 // if value in the first node
+    			front = front.next;
+    			if (front == back && front != null) {	    // if it was the only node
+    				back = null;
+    			}
+    		} else {					   // value not in the first node
+    			ListNode<E> prior = front;	           // set up a trailing reference
+    			while (prior.next != null) {               // look ahead one node
+//        			System.out.println(prior.next.data);
+    				if (prior.next.data.equals(value)) {   // found it
+    					prior.next = prior.next.next;
+    					if (prior.next == null) {            // if deleting the last node
+    						back = prior;
+    					}
+    				} //endif
+    				prior = prior.next;
+    			} //endwhile
+    		} // endelse
+    	}
+    }
+
+    /*********************************************
+     * Index list methods follow
+     *********************************************/
+    
+    /**
+     * Replaces the value at the given index with the given value.
+     * 
+     * @param 0 <= index < length
+     * @param value is assigned
+     * @throws IndexOutOfBoundsException if index < 0 or index >= length
+     */
+    public void set(int index, E value) {
+        if (index < 0 || index > getSize() - 1) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (!contains(value)) {
+        	checkIndex(index);
+        	ListNode<E> current = nodeAt(index);
+        	current.data = value;
+        } else {
+        	throw new IllegalArgumentException();
+        }
+    }
+    
+    public static void main(String[] args) {
+
+    		OtherSetUnsorted<String> a1 = new OtherSetUnsorted<String>();
+    		a1.insert("aaa");
+    		a1.insert("bbb");
+    		a1.insert("ccc");
+    		a1.remove("ccc");
+    		System.out.println(a1);
+    }
+}

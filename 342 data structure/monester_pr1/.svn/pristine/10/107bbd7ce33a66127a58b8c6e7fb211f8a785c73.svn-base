@@ -1,0 +1,194 @@
+package mysetpackage;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+/**
+ * Represents basic unsorted array-based list.
+ * 
+ * @author modified from Building Java Programs 3rd ed.
+ * @version Dec 2017
+ * @param <E> is of any object type
+ */
+public class ArraySetUnsorted<E> extends AbstractArraySet<E> {
+
+    /**
+     * Constructs an empty list of default capacity.
+     */
+    public ArraySetUnsorted() {
+        super();
+    }
+
+    /**
+     * Constructs an empty list of the given capacity.
+     * 
+     * @param capacity > 0
+     * @throws IllegalArgumentException if capacity <= 0
+     */
+//    @SuppressWarnings("unchecked")
+    public ArraySetUnsorted(int capacity) {
+        super(capacity);
+    }
+
+    @Override
+    public boolean contains(E value) {
+        for (int i = 0; i <= size; i++) {
+            if (elementData[i].equals(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    
+//    /**
+//     * Clears the list.
+//     */
+//    @SuppressWarnings("unchecked")
+//	public void clear() {
+//    	if (size > DEFAULT_CAPACITY) 
+//    		elementData = (E[]) new Object[DEFAULT_CAPACITY];
+//    	size = -1;
+//    }
+
+    @Override
+    public void remove(E value) {
+        int index = getIndex(value);
+        if (size >= 0 && index >= 0) {
+        		elementData[index] = elementData[size];
+            size--;
+        }
+    }
+
+  
+
+    /*********************************************
+     * Index list methods follow
+     *********************************************/
+    
+    @Override
+    public void set(int index, E value) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (contains(value)) {
+        		throw new IllegalArgumentException();
+        }
+        elementData[index] = value;
+    }
+
+    @Override
+    public void removeAtIndex(int index) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
+//        for (int i = index; i < size; i++)
+//        	elementData[i] = elementData[i + 1];
+        elementData[index] = elementData[size];
+        size--;
+    }
+
+    /*********************************************
+     * Index list methods end
+     *********************************************/
+
+    /*********************************************
+     * Iterator list class / methods follow
+     *********************************************/
+
+    @Override
+    public Iterator<E> iterator() {
+        return new ArrayListIterator();
+    }
+
+    /**
+     * Represents an iterator for the list.
+     * 
+     * @author BuildingJavaPrograms 3rd Edition
+     */
+    private class ArrayListIterator implements Iterator<E> {
+
+        /**
+         * current position within the list.
+         */
+        private int position;
+
+        /**
+         * flag that indicates whether list element can be removed.
+         */
+        private boolean removeOK;
+
+        /**
+         * Constructs an iterator for the given list
+         */
+        public ArrayListIterator() {
+            position = 0;
+            removeOK = false;
+        }
+
+        /**
+         * Returns whether there are more list elements.
+         * 
+         * @return true if there are more elements left, false otherwise
+         * @see java.util.Iterator#hasNext()
+         */
+        public boolean hasNext() {
+            return position <= size;
+        }
+
+        /**
+         * Returns the next element in the iteration.
+         * 
+         * @throws NoSuchElementException if no more elements.
+         * @return the next element in the iteration.
+         * @see java.util.Iterator#next()
+         */
+        public E next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            E result = elementData[position];
+            position++;
+            removeOK = true;
+            return result;
+        }
+
+        /**
+         * Removes the last element returned by the iterator.
+         * 
+         * @throws IllegalStateException if a call to next has not been made
+         *             before call to remove.
+         * @see java.util.Iterator#remove()
+         */
+        public void remove() {
+            if (!removeOK) {
+                throw new IllegalStateException();
+            }
+            ArraySetUnsorted.this.removeAtIndex(position - 1);
+            position--;
+            removeOK = false;
+        }
+    }
+
+    /*********************************************
+     * Iterator list class / methods end
+     *********************************************/
+    
+    public static void main(String[] args) {
+
+    	ArraySetUnsorted<String> a1 = new ArraySetUnsorted<String>();
+//  		for (int i = 0; i < 205; i++)
+//			a1.insert("str" + i);
+//		Iterator<String> itr = a1.iterator();
+//		String str = "[" + itr.next();
+//		while (itr.hasNext()) {
+//			str += ", " + itr.next();
+//		}
+    	a1.insert("aaa");
+		a1.insert("bbb");
+		a1.insert("ccc");
+		a1.clear();
+  		System.out.println(a1);
+    }
+
+}

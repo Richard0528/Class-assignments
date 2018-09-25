@@ -1,0 +1,31 @@
+Assignment name: easystreet
+TCSS 305: Programming Practicum, Autumn 2017
+
+Name: Zhihao Yang
+UWNetID: monester
+Subversion Revision Number: 11
+
+
+Assignment Overview:
+This assignment refreshes our knowledge of inheritance, interfaces, and abstract classes. Because we have so many objects with totally different behaviors, we have to figure out ways to represent each vehicle type. With this practice, we are now truly understand child and parent class better.
+
+
+Resources and Collaborations:
+Zhou lu
+Wen Shu
+
+
+Technical Impression:
+The is the most challenging assignment I have ever had in my previous courses. The abstractVehicle class is not that hard to figure out. I was trying to write out codes for truck type. However, I soon understood that the truck class is not that easy to finish. Zhou lu, Wen shu, and me were trying to use arrayList to add up possible directions and then made it pick direction randomly from the arrayList. This would pretty much guarantee give us high level complexity every time. I spent a whole afternoon coming up with a solution with while loop and helper method. 
+Also, we had same issue with the bicycle class as well. We were simply copying the car chooseDirection method code and trying to add more codes to it because we thought they have something in common. However, tons of if-loops gave us high level complexity. Then we  were stuck for a very long time. Luckily, we were able to combine our ideas and solved this last piece of puzzle together eventually. 
+I was quite enjoying this whole experience with this assignment. Sharing ideas with classmates and solving this big puzzle piece by piece, I learned a lot from that.  
+
+
+Unresolved problems in my submission:
+TruckTest can’t get full coverage. First, for chooseDirection method, I can’t figure out a way to test when the First two conditions are true and the third one is true. I tried to use surroundedbyGrass, surroundedbyTrail, or sourroundedbyWall, but I figured that those would only get in the first if loop and it would never get in the else loop.
+Second, for helperReverse method, I couldn’t find a way to test if my left block or right block is neither street, or light, or crosswalk. I thought my MustReverse1 method should cover all the cases at once. However, because java takes short-cuts, it will never check any conditions after checking the facing direction. T-T
+
+
+Questions:
+none.
+

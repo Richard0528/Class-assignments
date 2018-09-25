@@ -1,0 +1,107 @@
+package mysetpackage;
+
+public class LinkedSetSorted<E extends Comparable<? super E>> extends AbstractLinkedSet<E> {
+
+    /**
+     * Constructs an empty list.
+     */
+    public LinkedSetSorted() {
+    		super();
+    }
+
+    /**
+     * @see mylistpackage.MyList#insert(java.lang.Object)
+     */
+    @Override
+    public void insert(E value) {
+    		ListNode<E> valueNode = new ListNode<E>(value);
+    		if (front == null && back == null) {     // if the set is empty
+    			front = valueNode;
+    			back = valueNode;
+    			back.next = front;
+    		} 
+    		else if (front == back && !contains(value)) {
+    			if (front.data.compareTo(value) < 0) {
+    				front.next = valueNode;
+    				back = valueNode;
+    				back.next = front;
+    			} else {
+    				valueNode.next = front;
+    				front = valueNode;
+    				back.next = front;
+    			}
+    		} 
+    		else {
+    			if (!contains(value)) {         // if the set contains the value
+    				
+    				ListNode<E> prior = front;
+    	    			if (prior.data.compareTo(value) > 0) {
+    	    				valueNode.next = front;
+	    				front = valueNode;
+	    				back.next = front;
+    	    			} else {
+    	    				while (prior != back) {
+    	    					if (prior.data.compareTo(value) < 0 && prior.next.data.compareTo(value) > 0) {
+    	    						valueNode.next = prior.next;
+    	    						prior.next = valueNode;
+    	    					}
+
+    	    					prior = prior.next;
+    	    				}
+    	    				if (prior.data.compareTo(value) < 0) {
+        	    				back.next = valueNode;
+    	    				back = valueNode;
+    	    				back.next = front;
+        	    			}
+    	    				
+    	    			}
+    	    			
+    			}
+    		}
+    }
+    
+    /**
+     * Replaces the value at the given index with the given value.
+     * 
+     * @param 0 <= index < length
+     * @param value is assigned
+     * @throws IndexOutOfBoundsException if index < 0 or index >= length
+     */
+    @Override
+    public void set(int index, E value) {
+        checkIndex(index);
+        ListNode<E> current = nodeAt(index);
+        if (index == 0) {                 // if setting the first node
+        		if (front == back) {       // if it was the only node
+        			current.data = value;
+        		} else if (current.data.compareTo(value) > 0) {
+        			current.data = value;
+        		} else {
+        			throw new IllegalArgumentException();
+        		}
+        		
+        } else if (index == getSize() - 1) {          // if setting the last node
+        		if (current.data.compareTo(value) < 0) {   
+        			current.data = value;
+        		} else {
+        			throw new IllegalArgumentException();
+        		}
+        } else {
+        		if (current.data.compareTo(value) < 0 && current.next.data.compareTo(value) > 0) {
+        			current.data = value;
+        		} else {
+        			throw new IllegalArgumentException();
+        		}
+        }
+         
+    }
+    
+    
+    public static void main(String[] args) {
+
+  		LinkedSetSorted<String> a1 = new LinkedSetSorted<String>();
+  		for (int i = 0; i < 205; i++)
+			a1.insert("str" + i);
+  		System.out.println(a1);
+  }
+}

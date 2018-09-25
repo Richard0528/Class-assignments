@@ -1,0 +1,30 @@
+Assignment name: PowerPaint
+TCSS 305: Programming Practicum, Autumn 2017
+
+Name: Zhihao Yang
+UWNetID: monester
+Subversion Revision Number: 17
+
+
+Assignment Overview:
+For this assignment, we need to construct both the back-end structure and the front-end GUI ourselves. We are learning more and more useful tools in awt and swing package. Although part A does not require a lot of functionalities, we still need to think over the whole completed structure first.
+
+
+Resources and Collaborations:
+Wen Shu
+
+
+
+Technical Impression:
+It was the first time that I need to think over this kind of projects which have both front end and back end at once. I loved to separate it into several files to help me thinking and it was not that hard to complete the assignment if I solved these little pieces first. Basically, I followed what we did for the easy street assignment. I constructed three folders:action, gui, tools. 'Acton' folder holds different tool actions. For example, line tool can draw a line, which is called 'line action'. 'gui' folder holds the whole GUI that contains menus and other components. 'tools' folder defines all the informations about each tool. Most of the things are pretty easy to finish. 
+However, since we just learned about those graphics2D geometric primitives, I got confused when I tried to draw a line on my drawing panel. Then I downloaded all of those learning materials from canvas provided by Alan and studied them carefully. Those examples helped me a lot and I figure it out eventually. 
+There is still half of the assignment waiting there to be completed. But I did enjoying using those interesting tools and components. I believe that I can finish the rest of assignment with a good score.
+
+
+Unresolved problems in my submission:
+None.
+
+
+Questions:
+In the lineAction file, I intentionally hide the default point location by setting them as negative coordinates. Is there any other way that we don't need to declare the starting point and ending point in the constructor?
+

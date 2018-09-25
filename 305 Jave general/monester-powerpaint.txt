@@ -1,0 +1,29 @@
+Assignment name: PowerPaint part b
+TCSS 305: Programming Practicum, Autumn 2017
+
+Name: Zhihao Yang
+UWNetID: monester
+Subversion Revision Number: 23
+
+
+Assignment Overview:
+For this assignment, we need to construct both the back-end structure and the front-end GUI ourselves. We are learning more and more useful tools in awt and swing package. Compare to part a, part b is actually harder to complete because you need to make compromises on a lot of things. Something you did in part a will probably make part b a lot harder. 
+
+
+Resources and Collaborations:
+Wen Shu
+
+
+Technical Impression:
+For part b, although I got stuck a few times, I eventually solve all of them. Because I have separate classes for menu bar and Gui, I had a hard time trying passing values across these two classes. My first try was using property change listener. I tried to fire up property changes on all the button clicks and catch them in my panel class. I finally made them all worked out for part a. However, when I was doing part b and dealing with the "clear" button, I figure that I need to fire up property change from panel to my menu bar. In order to avoid two-way dependency, I removed all my firePropertyChanges in my menu and started thinking it over again. What I did was changing the constructor in my menu bar class and made it take Jpanel as an argument, then I would have all access in my panel by adding a lot of getters and setters. 
+I ran into problems when dealing with my pencil tool and clear button as well. I needed to create a new generalpath on every mouse press to avoid syncing all previous pencil shapes when I made a change on either thickness or color. For the clear button, it was just keeping acting weird thing when I picked my pencil tool. I ended up using a if-loop to void the functionality of filling when pencil tool was chosen.
+I learned a lot by doing this assignment.
+
+
+Unresolved problems in my submission:
+None.
+
+
+Questions:
+None.
+

@@ -1,0 +1,33 @@
+
+Assignment name: orientation
+TCSS 305: Programming Practicum, Autumn 2017
+
+
+Name: Zhihao Yang
+UWNetID: monester
+Subversion Revision Number: 2
+
+
+Assignment Overview:
+(Describe your understanding of the purpose and scope of the assignment in 250 words or less. The word count is not strict, so don't worry about going slightly over. Do not just copy text from the assignment description.)
+
+
+Resources and Collaborations:
+Basically, our professor Alan went over most of this assignment 0 in class and that helped me a lot with setting up a repository and starting up pretty much everything. I usually work with my friend Zhou Lu, who has same classes with me during the pasting two quarters. He just got in CSS major too. Otherwise, no web resource is been used.
+
+
+Technical Impression:
+I got told by my professor from my 143 class that 305 is going to be really hard. Although this has been just our very first assignment, I still ran into some issues. For example, first I had a very old version of Eclipse installed on my laptop. When I tried to install Eclipse oxygen for this class, I kept getting an error to launch the new Eclipse. After several attempts, I went to Alan’s office time for help and he suggested me to reinstall the Eclipse and JDK. Finally, I got my Eclipse working properly. 
+Second, I was using Github for my previous research projects. The Eclipse somehow automatically connected my Git without my permission when I tried to connect the eclipse to the SVN repository. Alan helped me had that issue fixed eventually too. The code that we had to submit is pretty easy and Mr.Alan pretty much completed the coding part for us during class time.
+Every time I run into an issue, I treated it as a learning experience. All these mistakes matter and don’t be afraid to make mistakes.
+Maybe 305 is a hard class, but I’m very confident that I will work hard and try hard on every assignment and test to get a 4.0.  
+
+
+Unresolved problems in my submission:
+none
+
+
+Questions:
+none
+
+

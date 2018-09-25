@@ -1,0 +1,75 @@
+package mysetpackage;
+
+public class LinkedSetSorted<E> extends AbstractLinkedSet<E> {
+
+    /**
+     * Constructs an empty list.
+     */
+    public LinkedSetSorted() {
+        super();
+    }
+
+    /**
+     * @see mylistpackage.MyList#insert(java.lang.Object)
+     */
+    @Override
+    public void insert(E value) {
+    	ListNode<E> valueNode = new ListNode<E>(value);
+    	if (front == null && back == null) {
+    		front = valueNode;
+    		back = valueNode;
+    		back.next = front;
+    	} else {
+    		if (!contains(value)) {
+    			back.next = valueNode;
+    			back = valueNode;
+    			back.next = front;
+    		}
+    	}
+    }
+    
+    private void searchPosition(E value) {
+    	ListNode<E> prior = front;
+    	while (prior.next != front) {
+    		if () {
+    			
+    		}
+    		
+    		
+    		prior = prior.next;
+    	}
+    }
+    
+    /**
+     * Replaces the value at the given index with the given value.
+     * 
+     * @param 0 <= index < length
+     * @param value is assigned
+     * @throws IndexOutOfBoundsException if index < 0 or index >= length
+     */
+    @Override
+    public void set(int index, E value) {
+        if (index < 0 || index > getSize() - 1) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (!contains(value)) {
+        	checkIndex(index);
+        	ListNode<E> current = nodeAt(index);
+        	current.data = value;
+        } else {
+        	throw new IllegalArgumentException();
+        }
+    }
+    
+    
+    public static void main(String[] args) {
+
+  		LinkedSetSorted<String> a1 = new LinkedSetSorted<String>();
+  		a1.insert("aaa");
+  		a1.insert("bbb");
+//  		a1.set(1, "bbb");
+//  		int size = a1.getSize();
+  		a1.remove("aaa");
+  		System.out.println(a1);
+  }
+}

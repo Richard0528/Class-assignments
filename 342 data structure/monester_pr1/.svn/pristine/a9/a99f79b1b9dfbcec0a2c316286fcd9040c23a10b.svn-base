@@ -1,0 +1,214 @@
+package mysetpackage;
+
+import java.util.Arrays;
+
+public abstract class AbstractArraySet<Type> implements MySet<Type> {
+	
+	/**
+     * default list capacity.
+     */
+    protected static final int DEFAULT_CAPACITY = 150;
+
+    /**
+     * list of values
+     */
+    protected Type[] elementData;
+
+    /**
+     * index of the last element in the list
+     */
+    protected int size;
+    
+    /**
+     * Constructs an empty list of default capacity.
+     */
+    public AbstractArraySet() {
+        this(DEFAULT_CAPACITY);
+    }
+
+    /**
+     * Constructs an empty list of the given capacity.
+     * 
+     * @param capacity > 0
+     * @throws IllegalArgumentException if capacity <= 0
+     */
+    @SuppressWarnings("unchecked")
+    public AbstractArraySet(int capacity) {
+        if (capacity <= 0) {
+            throw new IllegalArgumentException("capacity: " + capacity);
+        }
+        elementData = (Type[]) new Object[capacity];
+        size = -1;
+    }
+
+    @Override
+    public int getSize() {
+        return size + 1;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size == -1;
+    }
+    
+    /**
+     * Clears the list.
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+	public void clear() {
+//    	if (size > DEFAULT_CAPACITY) 
+    		elementData = (Type[]) new Object[DEFAULT_CAPACITY];
+    	size = -1;
+    }
+
+    @Override
+    public void insert(Type value) {
+    		// if the value is not contained, it will be added; otherwise, do not add.
+    		if (!contains(value)) {
+    			ensureCapacity(size + 2);
+    			size++;
+    			elementData[size] = value; 
+    		}
+    }
+
+    @Override
+    public String toString() {
+        if (size == -1) {
+            return "[]";
+        } else {
+            String result = "[" + elementData[0];
+            for (int i = 1; i <= size; i++) {
+                result += ", " + elementData[i];
+            }
+            result += "]";
+            return result;
+        }
+    }
+
+
+    /**
+     * Ensures that the underlying array has the given capacity; if not,
+     * increases the size by doubling it.
+     * 
+     * @param capacity > elementData.length.
+     */
+    private void ensureCapacity(int capacity) {
+        if (capacity > elementData.length) {
+            int newCapacity = elementData.length * 2;
+            if (capacity > newCapacity) {
+                newCapacity = capacity;
+            }
+            elementData = Arrays.copyOf(elementData, newCapacity);
+        }
+    }
+
+    /*********************************************
+     * Index list methods follow
+     *********************************************/
+
+    @Override
+    public int getIndex(Type value) {
+        for (int i = 0; i <= size; i++) {
+        		
+            if (elementData[i].equals(value)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public Type get(int index) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
+        return elementData[index];
+    }
+
+    /*********************************************
+     * Index list methods end
+     *********************************************/
+
+    /*********************************************
+     * Iterator list class / methods follow
+     *********************************************/
+
+//    @Override
+//    public Iterator<Type> iterator() {
+//        return new ArrayListIterator();
+//    }
+
+//    /**
+//     * Represents an iterator for the list.
+//     * 
+//     * @author BuildingJavaPrograms 3rd Edition
+//     */
+//    private class ArrayListIterator implements Iterator<Type> {
+//
+//        /**
+//         * current position within the list.
+//         */
+//        private int position;
+//
+//        /**
+//         * flag that indicates whether list element can be removed.
+//         */
+//        private boolean removeOK;
+//
+//        /**
+//         * Constructs an iterator for the given list
+//         */
+//        public ArrayListIterator() {
+//            position = 0;
+//            removeOK = false;
+//        }
+//
+//        /**
+//         * Returns whether there are more list elements.
+//         * 
+//         * @return true if there are more elements left, false otherwise
+//         * @see java.util.Iterator#hasNext()
+//         */
+//        public boolean hasNext() {
+//            return position <= size;
+//        }
+//
+//        /**
+//         * Returns the next element in the iteration.
+//         * 
+//         * @throws NoSuchElementException if no more elements.
+//         * @return the next element in the iteration.
+//         * @see java.util.Iterator#next()
+//         */
+//        public Type next() {
+//            if (!hasNext()) {
+//                throw new NoSuchElementException();
+//            }
+//            Type result = elementData[position];
+//            position++;
+//            removeOK = true;
+//            return result;
+//        }
+//
+//        /**
+//         * Removes the last element returned by the iterator.
+//         * 
+//         * @throws IllegalStateException if a call to next has not been made
+//         *             before call to remove.
+//         * @see java.util.Iterator#remove()
+//         */
+//        public void remove() {
+//            if (!removeOK) {
+//                throw new IllegalStateException();
+//            }
+//            AbstractArraySet.this.removeAtIndex(position - 1);
+//            position--;
+//            removeOK = false;
+//        }
+//    }
+
+    /*********************************************
+     * Iterator list class / methods end
+     *********************************************/
+}

@@ -1,0 +1,30 @@
+Tetris part A 
+TCSS 305: Programming Practicum, Autumn 2017
+
+Name: Zhihao Yang
+UWNetID: monester
+Subversion Revision Number: 33
+
+Assignment Overview:
+Once again, we learned how to write another front end code, but it was probably the hardest one in this quarter. The back end code was given. This assignment practiced the ability to understand the more complicated back end code and to use observer interface and observable class.
+
+Technical Impression:
+Although this assignment looked like very hard, everything made better senses to me after I finished it. As a final project, it covered a lot of things. When I was a kid, I never imagine that I can actually code it myself one day. The hardest point of this project was how to transfer the toString output from "board" class into GUI. I was trying to call the methods from the board class from panel but I noticed they were all private and protected soon enough. I started with my preview panel. I was planning on doing extra credit from the very start so I was intensionally not fixing the size for each little block. After a few tryouts, I decided to use the toString output from the nextMovablePiece method as a reduced version of the preview panel. It was always a 4-row string which each row contains 4 characters. I treated it as a 4-by-4 panel and then used double-loops to locate the next piece on this 4-by-4 panel. Next, I projected and centered it on my preview panel by looping through my collection of points. This was the same exact idea with the easyStreet assignment. After finishing up with my preview panel, I figured that I can use the same idea on my game board panel. 
+Professor Alan's example and our easyStreet assignment's back end code were both really helpful when I was doing this final project. I am planning on something big on the part b to make my tetris game nice and unique.
+
+
+Changes to the starter code:
+none.
+
+
+Extra Credit:
+1.The ability to resize the game board and whole window by dragging the corner.
+
+
+Unresolved problems in my submission:
+For the extra credit part, I cannot get my eastPanel resizing correctly. It has a fixed width, but the height of the panel is fine.
+
+
+Questions:
+none.
+

@@ -1,0 +1,314 @@
+package mysetpackage;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+
+public class ArraySetSorted<E extends Comparable<? super E>> extends AbstractArraySet<E> {
+    
+	/**
+     * Constructs an empty list of default capacity.
+     */
+    public ArraySetSorted() {
+    	super();
+    }
+    
+    /**
+     * Constructs an empty list of the given capacity.
+     * 
+     * @param capacity > 0
+     * @throws IllegalArgumentException if capacity <= 0
+     */
+    @SuppressWarnings("unchecked")
+    public ArraySetSorted(int capacity) {
+    	if (capacity <= 0) {
+            throw new IllegalArgumentException("capacity: " + capacity);
+        }
+        elementData = (E[]) new Comparable[capacity];
+        size = -1;
+    }
+    
+    /**
+     * helper function for binary search.
+     * 
+     * @param value
+     * @return
+     */
+    public int[] binarySearch(E value) {
+    		int start = 0;
+    		int end = size;
+    		int[] result = new int[2];
+    		while (start <= end) {
+    			int middle = (start + end) / 2;
+    			if (elementData[middle] == (value)) {
+    				result[0] = 1;
+    				result[1] = middle;
+    				return result;
+    			}
+    			
+    			if (elementData[middle].compareTo(value) > 0) {
+    				end = middle - 1;
+    				if (end == -1) {   // if it's the first node
+    					result[1] = 0;
+    				} else {
+    					result[1] = end;
+    				}
+    				
+    			} else {
+    				start = middle + 1;
+    				result[1] = start;
+    			}
+    			
+    		}
+
+    		result[0] = -1;
+    		return result;
+
+    }
+
+	@Override
+	public boolean contains(E value) {
+		
+		int[] result = binarySearch(value);
+
+		if (result[0] == -1) {
+			return false;
+		} else {
+			return true;
+		}
+
+	}
+	
+	@Override
+    public void insert(E value) {
+    		// if the value is not contained, it will be added; otherwise, do not add.
+    		if (!contains(value)) {
+    			if (size == -1) {
+    				size++;
+    				elementData[size] = value;
+//    				System.out.println(size);
+    			} else {
+    				ensureCapacity(size + 2);
+    				
+    				int result[] = binarySearch(value);
+    				size++;
+    				int index = result[1];
+//    				System.out.println(index);
+    				for (int i = size - 1; i > index - 1 ; i--) {
+    					elementData[i+1] = elementData[i];
+    				}
+    				elementData[index] = value;
+    				
+    			}
+    		}
+    		
+    }
+	
+//    /**
+//     * Clears the list.
+//     */
+//    @SuppressWarnings("unchecked")
+//	public void clear() {
+//    	if (size > DEFAULT_CAPACITY) 
+//    		elementData = (E[]) new Comparable[DEFAULT_CAPACITY];
+//    	size = -1;
+//    }
+
+    @Override
+    public String toString() {
+        if (size == -1) {
+            return "[]";
+        } else {
+            String result = "[" + elementData[0];
+            for (int i = 1; i <= size; i++) {
+                result += ", " + elementData[i];
+            }
+            result += "]";
+            return result;
+        }
+    }
+    
+	@Override
+	public void remove(E value) {
+		int index = getIndex(value);
+		if (size >= 0 && index >= 0) {
+			for (int i = index; i < size; i++) {
+				elementData[i] = elementData[i + 1];
+			}
+			size--;
+		}
+	}
+	
+	/**
+     * Ensures that the underlying array has the given capacity; if not,
+     * increases the size by doubling it.
+     * 
+     * @param capacity > elementData.length.
+     */
+    private void ensureCapacity(int capacity) {
+        if (capacity > elementData.length) {
+            int newCapacity = elementData.length * 2;
+            if (capacity > newCapacity) {
+                newCapacity = capacity;
+            }
+            elementData = Arrays.copyOf(elementData, newCapacity);
+        }
+    }
+	
+
+    /*********************************************
+     * Index list methods follow
+     *********************************************/
+    
+    @Override
+    public int getIndex(E value) {
+    		if (contains(value)) {
+    			int[] result = binarySearch(value);
+    			return result[1];
+    		}
+    		return -1;
+    }
+
+	@Override
+	public void removeAtIndex(int index) {
+		if (index < 0 || index > size) {
+			throw new IndexOutOfBoundsException();
+		}
+		for (int i = index; i < size; i++)
+			elementData[i] = elementData[i + 1];
+		size--;
+		
+	}
+	
+	@Override
+    public void set(int index, E value) {
+		int result[] = binarySearch(value);
+		int realIndex = result[1];
+		
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
+//        if (!contains(value)) {
+//        	throw new IllegalArgumentException();
+//        }
+        if (index == 0) {
+        	elementData[index] = value;
+        } else if (realIndex != index) {
+        	throw new IllegalArgumentException();
+        }
+        elementData[index] = value;
+    }
+
+    @Override
+    public E get(int index) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
+        
+        return elementData[index];
+    }
+
+    /*********************************************
+     * Index list methods end
+     *********************************************/
+
+    /*********************************************
+     * Iterator list class / methods follow
+     *********************************************/
+
+    @Override
+    public Iterator<E> iterator() {
+        return new ArrayListIterator();
+    }
+
+    /**
+     * Represents an iterator for the list.
+     * 
+     * @author BuildingJavaPrograms 3rd Edition
+     */
+    private class ArrayListIterator implements Iterator<E> {
+
+        /**
+         * current position within the list.
+         */
+        private int position;
+
+        /**
+         * flag that indicates whether list element can be removed.
+         */
+        private boolean removeOK;
+
+        /**
+         * Constructs an iterator for the given list
+         */
+        public ArrayListIterator() {
+            position = 0;
+            removeOK = false;
+        }
+
+        /**
+         * Returns whether there are more list elements.
+         * 
+         * @return true if there are more elements left, false otherwise
+         * @see java.util.Iterator#hasNext()
+         */
+        public boolean hasNext() {
+            return position <= size;
+        }
+
+        /**
+         * Returns the next element in the iteration.
+         * 
+         * @throws NoSuchElementException if no more elements.
+         * @return the next element in the iteration.
+         * @see java.util.Iterator#next()
+         */
+        public E next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            E result = elementData[position];
+            position++;
+            removeOK = true;
+            return result;
+        }
+
+        /**
+         * Removes the last element returned by the iterator.
+         * 
+         * @throws IllegalStateException if a call to next has not been made
+         *             before call to remove.
+         * @see java.util.Iterator#remove()
+         */
+        public void remove() {
+            if (!removeOK) {
+                throw new IllegalStateException();
+            }
+            ArraySetSorted.this.removeAtIndex(position - 1);
+            position--;
+            removeOK = false;
+        }
+    }
+
+    /*********************************************
+     * Iterator list class / methods end
+     *********************************************/
+    
+    public static void main(String[] args) {
+        
+        ArraySetSorted<String> a1 = new ArraySetSorted<String>(3);
+        a1.insert("str0");
+		a1.insert("str1");
+		a1.insert("str2");
+		a1.insert("str3");
+		a1.set(0, "new");
+        System.out.println(a1);
+        
+    }
+    
+    
+    
+    
+    
+}

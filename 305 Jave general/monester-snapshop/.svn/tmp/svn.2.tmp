@@ -1,0 +1,336 @@
+/*
+ * TCSS 305 - SnapShop
+ */
+
+package gui;
+
+import filters.EdgeDetectFilter;
+import filters.EdgeHighlightFilter;
+import filters.Filter;
+import filters.FlipHorizontalFilter;
+import filters.FlipVerticalFilter;
+import filters.GrayscaleFilter;
+import filters.SharpenFilter;
+import filters.SoftenFilter;
+import image.PixelImage;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+/**
+ * THe graphical user interface for the SnapShop program.
+ * 
+ * @author richardyang
+ * @version 10.29
+ * @version 11.1
+ */
+public class SnapShopGUI {
+    
+    /** A size for the JFrame. */
+    private static final Dimension FRAME_SIZE = new Dimension(400, 300);
+    
+    /** A minimun size for the JFrame. */
+    private static final Dimension MIN_FRAME_SIZE = new Dimension(500, 400);
+    
+    /** The top level window for this application. */
+    private final JFrame myFrame;
+    
+    /** Blank Jlabel area for image. */
+    private JLabel myCenterLabel;
+    
+    /** Set up a default path for JFileChooser. */
+    private JFileChooser myFileChooser = new JFileChooser(".");
+
+    /** A container holds buttons for left-side panel. */
+    private Container myConfigControlButtonPanel;
+    
+    /** A container holds buttons for bottom panel. */
+    private Container myConfigBottomButtonPanel;
+    
+    /** A list holds all the buttons except open. */
+    private List<JButton> myButtons;
+    
+    /** A image which is about to be edited. */
+    private PixelImage myImage;
+    
+    /**
+     * Initializes the JFrame.
+     */
+    public SnapShopGUI() {
+        myFrame = new JFrame("TCSS 305 Snapshop");
+    }
+    
+    /**
+     * Displays a simple JFrame.
+     */
+    public void start() {
+        
+        myCenterLabel = new JLabel();
+        myButtons = new ArrayList<JButton>();
+        
+        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        myFrame.setSize(FRAME_SIZE);
+        myFrame.setLocationRelativeTo(null);
+        
+        configControlButtonPanel();
+        configBottomButtonPanel();
+        
+        // enhanced for-loop to disable all buttons except open 
+        for (JButton a : myButtons) {
+            a.setEnabled(false);
+        }
+
+        myFrame.add(myConfigControlButtonPanel, BorderLayout.WEST);
+        myFrame.add(myConfigBottomButtonPanel, BorderLayout.SOUTH);
+        myFrame.add(myCenterLabel, BorderLayout.CENTER);
+        
+        
+        myFrame.setVisible(true);
+    }
+    
+    /**
+     * A control panel that holds all the functional buttons.
+     */
+    private void configControlButtonPanel() {
+        
+        final JButton edgeDetect = new JButton("Edge Detect");
+        final JButton edgeHigh = new JButton("Edge Highlight");
+        final JButton flipHor = new JButton("Flip Horizontal");
+        final JButton flipVert = new JButton("Flip Vertical");
+        final JButton grayScal = new JButton("Grayscale");
+        final JButton sharp = new JButton("Sharpen");
+        final JButton soft = new JButton("Soften");
+        myButtons.add(edgeDetect);
+        myButtons.add(edgeHigh);
+        myButtons.add(flipHor);
+        myButtons.add(flipVert);
+        myButtons.add(grayScal);
+        myButtons.add(sharp);
+        myButtons.add(soft); 
+        ////////////////////////////////////////////////////////////////
+        // Action Listener, anonymous inner classes
+        edgeDetect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent theA) {
+                final Filter filter = new EdgeDetectFilter();
+                filter.filter(myImage);
+                myCenterLabel.setIcon(new ImageIcon(myImage));
+
+            }
+        });
+        
+        edgeHigh.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent theB) {
+                final Filter filter = new EdgeHighlightFilter();
+                filter.filter(myImage);
+                myCenterLabel.setIcon(new ImageIcon(myImage));
+
+            }
+        });
+
+        flipHor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent theC) {
+                final Filter filter = new FlipHorizontalFilter();
+                filter.filter(myImage);
+                myCenterLabel.setIcon(new ImageIcon(myImage));
+                
+            }
+        });
+
+        flipVert.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent theD) {
+                final Filter filter = new FlipVerticalFilter();
+                filter.filter(myImage);
+                myCenterLabel.setIcon(new ImageIcon(myImage));
+
+            }
+        });
+
+        grayScal.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent theE) {
+                final Filter filter = new GrayscaleFilter();
+                filter.filter(myImage);
+                myCenterLabel.setIcon(new ImageIcon(myImage));
+
+            }
+        });
+
+        sharp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent theF) {
+                final Filter filter = new SharpenFilter();
+                filter.filter(myImage);
+                myCenterLabel.setIcon(new ImageIcon(myImage));
+                
+            }
+        });
+
+        soft.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent theG) {
+                final Filter filter = new SoftenFilter();
+                filter.filter(myImage);
+                myCenterLabel.setIcon(new ImageIcon(myImage));
+
+            }
+        });
+
+        ////////////////////////////////////////////////////////////////
+        // add buttons to the panel
+        myConfigControlButtonPanel = new Container(); 
+        myConfigControlButtonPanel.setLayout(new GridLayout(0, 1));
+        myConfigControlButtonPanel.add(edgeDetect);
+        myConfigControlButtonPanel.add(edgeHigh);
+        myConfigControlButtonPanel.add(flipHor);
+        myConfigControlButtonPanel.add(flipVert);
+        myConfigControlButtonPanel.add(grayScal);
+        myConfigControlButtonPanel.add(sharp);
+        myConfigControlButtonPanel.add(soft);
+    }
+    
+    /**
+     * A panel holds open, save, close buttons.
+     */
+    private void configBottomButtonPanel() {
+        
+        final JButton open = new JButton("Open...");
+        final JButton save = new JButton("Save as...");
+        final JButton close = new JButton("Close Image");
+//        myButtons.add(open);
+        myButtons.add(save);
+        myButtons.add(close);
+        
+        ////////////////////////////////////////////////////////////////
+        // Action Listener, anonymous inner class
+        open.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent theA) {
+
+                openImage();
+                
+                myFrame.pack();
+                myFrame.setMinimumSize(MIN_FRAME_SIZE);
+                myFrame.setLocationRelativeTo(null);
+                
+            }
+
+        });
+
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent theB) {
+
+                save();
+                
+            }
+
+        });
+
+        close.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent theC) {
+
+                myCenterLabel.setIcon(null);
+                myCenterLabel.revalidate();
+            }
+
+        });
+
+
+        ////////////////////////////////////////////////////////////////
+        // add buttons to the panel
+        myConfigBottomButtonPanel = new Container(); 
+        myConfigBottomButtonPanel.setLayout(new FlowLayout());
+
+        myConfigBottomButtonPanel.add(open);
+        myConfigBottomButtonPanel.add(save);
+        myConfigBottomButtonPanel.add(close);
+    }
+    
+    /**
+     * A helper method to save image.
+     */
+    private void save() {
+
+        myCenterLabel.getIcon();
+        final int result = myFileChooser.showSaveDialog(null);
+        
+        if (result == JFileChooser.APPROVE_OPTION) {
+
+            try {
+                myFileChooser.setCurrentDirectory(myFileChooser.
+                                                  getCurrentDirectory());
+                if (myFileChooser.getSelectedFile().exists()) {
+                    final int response = JOptionPane.showConfirmDialog(null,
+                                       "Do you want to replace the existing file?",
+                                       "Confirm", JOptionPane.YES_NO_OPTION, 
+                                       JOptionPane.QUESTION_MESSAGE);
+                    if (response != JOptionPane.YES_OPTION) {
+                        return;
+                    } 
+                }
+                
+                
+                
+                myImage.save(myFileChooser.getSelectedFile());
+            } catch (final IOException e) {
+                JOptionPane.showMessageDialog(null
+                                              , "Can't save the image");
+            }
+
+        }
+
+    }
+
+   /**
+     * A helper method to open image.
+     */
+    private void openImage() {
+        
+        final int result = myFileChooser.showOpenDialog(null);
+        
+        if (result == JFileChooser.APPROVE_OPTION) {
+
+            try {
+                myImage = PixelImage.load(myFileChooser.getSelectedFile());
+
+                myCenterLabel.setIcon(new ImageIcon(myImage));
+                myCenterLabel.setHorizontalAlignment(JLabel.CENTER);
+                
+                // enable all the buttons
+                for (final JButton b : myButtons) {
+                    b.setEnabled(true);
+                }
+
+                // remember the path
+                final String curPath = myFileChooser.getSelectedFile().toString();
+                myFileChooser = new JFileChooser(curPath);
+            } catch (final IOException e) {
+                JOptionPane.showMessageDialog(null
+                                              , "The selected file does "
+                                                           + "not contain an image");
+            }
+
+        }
+        
+    }
+    
+    
+}

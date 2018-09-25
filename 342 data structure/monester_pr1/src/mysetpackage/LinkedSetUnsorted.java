@@ -1,0 +1,76 @@
+package mysetpackage;
+
+/**
+ * Represents basic unsorted linked-base set.
+ * 
+ * @author richardyang
+ * @version 1.20
+ * @param <E> is of any object type
+ */
+public class LinkedSetUnsorted<E> extends AbstractLinkedSet<E> {
+
+    /**
+     * Constructs an empty list.
+     */
+    public LinkedSetUnsorted() {
+        super();
+    }
+
+    /**
+     * @see mylistpackage.MyList#insert(java.lang.Object)
+     */
+    @Override
+    public void insert(E value) {
+    		ListNode<E> valueNode = new ListNode<E>(value);
+    		if (front == null && back == null) {
+    			front = valueNode;
+    			back = valueNode;
+    			back.next = front;
+    		} else {
+    			if (!contains(value)) {
+    				back.next = valueNode;
+    				back = valueNode;
+    				back.next = front;
+    			}
+    		}
+    }
+    
+    /**
+     * Replaces the value at the given index with the given value.
+     * 
+     * @param 0 <= index < length
+     * @param value is assigned
+     * @throws IndexOutOfBoundsException if index < 0 or index >= length
+     */
+    @Override
+    public void set(int index, E value) {
+        checkIndex(index);
+        if (!contains(value)) {
+        		checkIndex(index);
+        		ListNode<E> current = nodeAt(index);
+        		current.data = value;
+        } else {
+        		throw new IllegalArgumentException();
+        }
+    }
+    
+    /*********************************************
+     * Test
+     *********************************************/
+
+    public static void main(String[] args) {
+
+    	LinkedSetUnsorted<String> a1 = new LinkedSetUnsorted<String>();
+//    	a1.insert("aaa");
+//		Iterator<String> itr = a1.iterator();
+//		String str = "[" + itr.next();
+//		while (itr.hasNext()) {
+//			str += ", " + itr.next();
+//		}
+//		str += "]";
+		a1.insert("aaa");
+		a1.insert("bbb");
+//		a1.remove("bbb");
+    		System.out.println(a1);
+    }
+}

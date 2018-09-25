@@ -1,0 +1,501 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LaTeX Example: Project Report
+%
+% Source: http://www.howtotex.com
+%
+% Feel free to distribute this example, but please keep the referral
+% to howtotex.com
+% Date: March 2011 
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% How to use writeLaTeX: 
+%
+% You edit the source code here on the left, and the preview on the
+% right shows you the result within a few seconds.
+%
+% Bookmark this page and share the URL with your co-authors. They can
+% edit at the same time!
+%
+% You can upload figures, bibliographies, custom classes and
+% styles using the files menu.
+%
+% If you're new to LaTeX, the wikibook is a great place to start:
+% http://en.wikibooks.org/wiki/LaTeX
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Edit the title below to update the display in My Documents
+%\title{343 Assignment 1}
+%
+%%% Preamble
+\documentclass[paper=a4, fontsize=11pt]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage{fourier}
+
+\usepackage[english]{babel}															% English language/hyphenation
+\usepackage[protrusion=true,expansion=true]{microtype}	
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage{mathtools}
+\usepackage[pdftex]{graphicx}	
+\usepackage{url}
+\usepackage{ulem}
+
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+
+
+\newtheorem{theorem}{Theorem}
+
+%%% Custom sectioning
+\usepackage{sectsty}
+\allsectionsfont{\centering \normalfont\scshape}
+
+
+%%% Custom headers/footers (fancyhdr package)
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+\fancyhead{}											% No page header
+\fancyfoot[L]{}											% Empty 
+\fancyfoot[C]{}											% Empty
+\fancyfoot[R]{\thepage}									% Pagenumbering
+\renewcommand{\headrulewidth}{0pt}			% Remove header underlines
+\renewcommand{\footrulewidth}{0pt}				% Remove footer underlines
+\setlength{\headheight}{13.6pt}
+
+
+%%% Equation and float numbering
+\numberwithin{equation}{section}		% Equationnumbering: section.eq#
+\numberwithin{figure}{section}			% Figurenumbering: section.fig#
+\numberwithin{table}{section}				% Tablenumbering: section.tab#
+
+
+%%% Maketitle metadata
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} 	% Horizontal rule
+
+\title{
+		%\vspace{-1in} 	
+		\usefont{OT1}{bch}{b}{n}
+		\normalfont \normalsize \textsc{Institute of Technology} \\ [25pt]
+		\horrule{0.5pt} \\[0.4cm]
+		\huge TCSS 343 - Assignment 1\\
+		\horrule{2pt} \\[0.5cm]
+}
+\author{
+		\normalfont 								\normalsize
+        Zhihao Yang\\[-3pt]
+}
+
+
+%%% Begin document
+\begin{document}
+\maketitle
+
+\newpage
+\section{Problems}
+
+\subsection{Understand}
+
+\begin{enumerate}
+\item [(6 points) 1.] Prove the following theorems.  Use a \textbf{direct proof} to find constants that satisfy the definition of $\Theta(n^2)$ \textit{or} use the \textbf{limit test}.  Make sure your proof is complete, concise, clear and precise.
+
+\begin{theorem}
+$3n^2 - 2n - 4 \in \Theta(n^2)$
+\end{theorem}
+	\begin{proof}
+		By the definition of big $\Theta$, there exists constant $a, b, n_0$ such that $a\cdot g(n) \leq f(n)\leq b\cdot g(n)$ for all $n>n_0$. We have $an^2 \leq 3n^2 - 2n - 4 \leq bn^2$. $b=3$ because $-2n-4$ will only make things smaller. Let $a = 2$, we get:
+		\begin{align*}
+			3n^2-2n-4 \geq 2n^2 \\
+			n^2 \geq 2n+4 \\
+			n^2 - 2n + 1 \geq 5 \\
+			(n-1)^2 \geq 5 \\
+			n \geq \sqrt{5} + 1
+		\end{align*}
+		So $n_0 = \sqrt{5} + 1$. $3n^2 - 2n - 4 \in \Theta(n^2)$.
+	\end{proof}
+\begin{theorem}
+$\log(n^2 + 1) \in \Theta(\log(n))$
+\end{theorem}
+	\begin{proof}
+		We can use the limit test and L'Hopital's rule. 
+		
+		We will calculate the limit of $\frac{\log(n^2+1)}{\log(n)}$. 
+		\begin{align*}
+			\lim_{n\rightarrow\infty} \frac{\log(n^2+1)}{\log(n)} &= \lim_{n\rightarrow\infty} \frac{\frac{2nc_1}{n^2+1}}{\frac{c_2}{n}} \\
+			&= 	\frac{2c_1}{c_2}\lim_{n\rightarrow\infty} \frac{n^2}{n^2+1} \\
+			&= \frac{2c_1}{c_2} = c
+		\end{align*}
+		Since the limite is non-zero constant we can conclude by the limit test:
+		
+		$\log(n^2 + 1) \in \Theta(\log(n))$.
+	\end{proof}
+\begin{theorem}
+$2^{n + 2} + 2 \in \Theta(2^n)$
+\end{theorem}
+	\begin{proof}
+		We can use the limit test and L'Hopital's rule. 
+		
+		We will calculate the limit of $\frac{2^{n + 2} + 2}{2^n}$. 
+		\begin{align*}
+			\lim_{n\rightarrow\infty} \frac{2^{n + 2} + 2}{2^n} &= \lim_{n\rightarrow\infty} \frac{2^{n+2}}{2^n} + \lim_{n\rightarrow\infty} \frac{2}{2^n} \\
+			&= 2^2\lim_{n\rightarrow\infty} 1 + 2 \lim_{n\rightarrow\infty} \frac{1}{2^n} \\
+			&= 4 + 0 = 4
+		\end{align*}
+		Since the limite is non-zero constant we can conclude by the limit test:
+		
+		$2^{n + 2} + 2 \in \Theta(2^n)$.
+	\end{proof}
+
+
+\item [(8 points) 2.] Find a closed for expression for these sum where $c$ is a constant:
+\begin{enumerate}
+\item 
+$\displaystyle\sum_{i=1}^{n}(n+i+c)$
+\begin{align*}
+	\sum_{i=1}^{n}(n+i+c) &= \sum_{i=1}^{n}n + \sum_{i=1}^{n}i + \sum_{i=1}^{n}c \\
+	&= n^2 + \frac{n(1+n)}{2} + cn \\
+	&= \frac{n^2}{2} + (c+\frac{1}{2})n
+\end{align*}
+
+
+
+
+%For upper bound, we can replace $i$ with $n$:
+%\begin{align*}
+%	\sum_{i=1}^{n}(n+n+c) &= \sum_{i=1}^{n}(2n+c) \\
+%	&= \sum_{i=1}^n 2n + \sum_{i=1}^n c \\
+%	&= 2n \sum_{i=1}^n 1 + c \sum_{i=1}^n 1 \\
+%	&= 2n*n + c*n \\
+%	&= 2n^2 + cn \\
+%	&\approx 2n^2
+%\end{align*}
+%For lower bound, we need to split the sum: 
+%
+%$$\displaystyle\sum_{i=1}^{n}(n+i+c) = \sum_{i=1}^{\floor{\frac{n}{2}}}(n+i+c)  + \sum_{\floor{\frac{n}{2}}+1}^{n}(n+i+c)$$
+%
+%The whole sum will be greater than the half of the sum:
+%
+%$$\displaystyle\sum_{i=1}^{n}(n+i+c) \geq \sum_{\floor{\frac{n}{2}}+1}^{n}(n+i+c)$$
+%
+%and then binding the term, replace i with the lower range:
+%\begin{align*}
+%	\sum_{\floor{\frac{n}{2}}+1}^{n}(n+\floor{\frac{n}{2}}+c) &= (n+\floor{\frac{n}{2}}+1+c)(n-(\floor{\frac{n}{2}}+1) + 1) \\	
+%	&= (n+\floor{\frac{n}{2}}+1+c)(\ceil{\frac{n}{2}}) \\
+%	&\geq (n+\frac{n}{2} + c)(\frac{n}{2}) \\
+%	&= 2*(\frac{n}{2})^2 + c(\frac{n}{2}) \\
+%	&\approx 2*(\frac{n}{2})^2
+%\end{align*}
+%
+%Hence, $\displaystyle2(\frac{n}{2})^2 \leq \sum_{i=1}^{n}(n+i+c) \leq 2n^2$.
+
+\item
+$\displaystyle\sum_{i=1}^{n}\left(\sum_{j=i}^{n}c\right)$
+\begin{align*}
+	\sum_{i=1}^{n}\left(\sum_{j=i}^{n}c\right) &= \sum_{i=1}^{n}c(n-i+1) \\
+	&= \sum_{i=1}^{n}ci \\
+	&= c\frac{1}{2}(n+1)n
+\end{align*}
+
+%For the upper bound, since there is only constant in the summation, we can just move $c$ to the front of summation.
+%\begin{align*}
+%	\sum_{i=1}^{n}\left(\sum_{j=i}^{n}c\right) &= \sum_{i=1}^{n}\left(c \sum_{j=i}^{n}1 \right) \\
+%	&= \sum_{i=1}^{n}\left(cn \right) \\
+%	&= cn \sum_{i=1}^{n} 1 \\
+%	&= cn*n \\
+%	&= cn^2
+%\end{align*}
+%
+%For the lower bound, 
+
+
+\item
+$\displaystyle\sum_{i=1}^{n}\frac{2^i}{2^n}$
+\begin{align*}
+	\sum_{i=1}^{n}\frac{2^i}{2^n} &= \frac{1}{2n}\sum_{i=1}^{n}2^i \\
+	&= \frac{1}{2n}(\sum_{i=0}^{n}2^i-2^0) \\
+	&= \frac{1}{2n} \cdot (\frac{1-2^{n+1}}{1-2} - 1) \\
+	&= \frac{1}{2n} \cdot (2^{n+1} - 1 - 1) \\
+	&= \frac{1}{n} (2^n - 1)
+\end{align*}
+
+%For the upper bound, we need to replace $i$ with $n$.
+%\begin{align*}
+%	\sum_{i=1}^{n}\frac{2^n}{2^n} &= 1\sum_{i=1}^{n} 1 \\
+%	&= 1*n = n
+%\end{align*}
+
+
+
+\item
+$\displaystyle\sum_{i=\left\lfloor\frac{n}{2}\right\rfloor}^{n}i$
+\begin{align*}
+	\sum_{i=\left\lfloor\frac{n}{2}\right\rfloor}^{n}i &= \floor{\frac{n}{2}} + (\floor{\frac{n}{2}} + 1) + (\floor{\frac{n}{2}} + 2) + \dots + n \\
+	&= \frac{1}{2}(\floor{\frac{n}{2}}+n)(\ceil{\frac{n}{2}}+1)
+\end{align*}
+\end{enumerate}
+\item [(6 points) 3.] Express the worst case run time of these pseudo-code functions as summations.  You do not need to simplify the summations.  
+\begin{enumerate}
+\item
+\begin{verbatim}
+function(n)
+   let A be an empty stack
+   for int i from 1 to n
+      A.push(i)
+   endfor
+endfunction
+\end{verbatim}
+
+Cost: $\displaystyle c + \sum_{i=1}^{n}c  = c + cn$.
+
+
+\item
+\begin{verbatim}
+function(A[1...n] a list of n integers)
+   for int i from 1 to n
+      find and remove the minimum integer in A
+   endfor
+endfunction
+\end{verbatim}
+
+Cost: $\displaystyle\sum_{i=1}^{n}(n -i + 1)$
+
+\item
+\begin{verbatim}
+function(H[1...n] a min-heap of n integers)
+   for int i from 1 to n
+      find and remove the minimum integer in H
+   endfor
+endfunction
+\end{verbatim}
+
+Cost: $\displaystyle\sum_{i=1}^{n}(c+\log(n))$
+
+\end{enumerate}
+
+
+\end{enumerate}
+
+
+\noindent\textbf{Grading} You will be docked points for errors in your math, disorganization, unclarity, or incomplete proofs. 
+
+\newpage
+\subsection{Explore}
+
+\begin{enumerate}
+\item [(3 points) 1.] Prove using the definition of $\Theta(\log_2(n))$ or the limit test the following theorem.
+
+\begin{theorem}
+Let $d > 1$ be a real number.
+\[
+\log_d(n) \in \Theta(\log_2(n))
+\]
+\end{theorem}
+\begin{proof}
+	We can use the limit test and L'Hopital's rule:
+	\begin{align*}
+		\lim_{n\rightarrow \infty} \frac{\log_d(n)}{\log_2(n)} &= \lim_{n\rightarrow\infty} \frac{\frac{c}{\log_2(5)n}}{\frac{c}{n}} \\
+		&= \frac{1}{\log_2(5)} \lim_{n\rightarrow\infty} \frac{c}{n} \cdot \frac{n}{c} \\
+		&= \frac{1}{\log_2(5)} \lim_{n\rightarrow\infty} 1 \\
+		&= \frac{1}{\log_2(5)}
+	\end{align*}
+	From above, we got a constant after the limit test. We can conclude that $\log_d(n) \in \Theta(\log_2(n))$.
+\end{proof}
+
+\
+
+\item [(3 points) 2.] Prove using the definition of $\Theta(n)$ or the limit test the following theorem.
+
+\begin{theorem}
+Let $f(n)\in\Theta(n)$ and let $g(n)\in\Theta(n)$ then $f(n)+g(n)\in\Theta(n)$.
+\end{theorem}
+\begin{proof}
+	We can use the limite test and the definition of $\Theta(n)$:
+	\begin{align*}
+		\lim_{n\rightarrow\infty} \frac{f(n)+g(n)}{n} &= \lim_{n\rightarrow\infty}\frac{f(n)}{n}  +  \lim_{n\rightarrow\infty}\frac{g(n)}{n} \ \ \ \text{(Because $f(n)\in\Theta(n)$, $g(n)\in\Theta(n)$,)} \\
+		&= c + c  \ \ \  \text{($f(n)$ and $g(n)$ have the same growth rate with $n$.) } \\
+		&= c
+	\end{align*}
+	Then since the result is constant, we can conclude that $f(n)+g(n)\in\Theta(n)$.
+\end{proof}
+
+\
+
+\item [(3 points) 3.] Prove using the definition of $\Theta(h(n))$ or the limit test the following theorem.
+
+\begin{theorem}
+Let $f(n)\in\Theta(g(n))$ and let $g(n)\in\Theta(h(n))$ then $f(n)\in\Theta(h(n))$.
+\end{theorem}
+\begin{proof}
+	By the definition of $\Theta$, we know $\displaystyle\lim_{n\rightarrow\infty}\frac{f(n)}{g(n)} = c$, $\displaystyle\lim_{n\rightarrow\infty}\frac{g(n)}{h(n)} = c$. By the multiplication law of limit, we can multiply both limits:
+	
+	\begin{align*}
+		\displaystyle\lim_{n\rightarrow\infty}\frac{f(n)}{g(n)} \cdot \displaystyle\lim_{n\rightarrow\infty}\frac{g(n)}{h(n)} &= c \\
+		\lim_{n\rightarrow\infty}\frac{f(n)}{g(n)} \cdot \frac{g(n)}{h(n)} &= c \\
+		\lim_{n\rightarrow\infty}\frac{f(n)g(n)}{g(n)h(n)} &= c \\
+		\lim_{n\rightarrow\infty}\frac{f(n)}{h(n)} &= c
+	\end{align*}
+	By the limit test, since the result is constant, we can conclude $f(n)\in\Theta(h(n))$.
+\end{proof}
+
+\
+
+\item [(10 points) 4.] Place these functions in order from slowest asymptotic growth to fastest asymptotic growth.  You will want to simplify them algebraically before comparing them.  You do not need to prove any relationships.
+\begin{eqnarray*}
+f_0(n) & = & 6n^2 + 12n - 4 \\
+f_1(n) & = & 2^{2n}  \\
+f_2(n) & = & \left(\frac{n}{\log_2n}\right)^2 \\
+f_3(n) & = & 3^{\log_2n} \\
+f_4(n) & = & 3^n \\
+f_5(n) & = & \log_2(n\cdot n^n) \\
+f_6(n) & = & \log_2n + 3 \\
+f_7(n) & = & \log_2\left(\log_2n + 3\right) \\
+f_8(n) & = & 2^{\sqrt{n}} \\ 
+f_9(n) & = & 10^9 + 25^2
+\end{eqnarray*}
+
+Answer:
+
+$10^9 + 25^2$, $\log_2\left(\log_2n + 3\right)$, $\log_2n + 3$, $\log_2(n\cdot n^n)$, $\left(\frac{n}{\log_2n}\right)^2$, $6n^2 + 12n - 4$, $2^{\sqrt{n}}$, $3^{\log_2n}$, $3^n$,$2^{2n}$
+
+
+\end{enumerate}
+\noindent\textbf{Grading} You will be docked points for functions in the wrong order and for disorganization, unclarity, or incomplete proofs. 
+
+\newpage
+\subsection{Expand}
+
+\begin{enumerate}
+
+\item [(5 points) 1.] Prove the theorem below using the techniques of \textbf{binding the term} and \textbf{splitting the sum} to find a tight bound for the sum.  Make sure your proof is complete, concise, clear and precise.
+
+\begin{theorem}
+\[
+\sum_{i=1}^{n}i^5 \in \Theta\left(n^{6}\right)
+\]
+\end{theorem}
+\begin{proof}
+	For the upper bound, we can replace $i$ with $n$:
+	\begin{align*}
+		\sum_{i=1}^{n}n^5 &= n^5 \sum_{i=1}^{n} 1 \\
+		&= n^5 *n \\
+		&= n^6
+	\end{align*}
+	For the lower bound, we need to split the sum first, $\displaystyle\sum_{i=1}^{n}i^5 = \displaystyle\sum_{i=1}^{\floor{\frac{n}{2}}}i^5 + \displaystyle\sum_{\floor{\frac{n}{2}} + 1}^{n}i^5$. We pick a half of the sum, then binding the term and replace $i$ with $\floor{\frac{n}{2}} + 1$:
+	\begin{align*}
+		\sum_{\floor{\frac{n}{2}} + 1}^{n}(\floor{\frac{n}{2}} + 1)^5 &= (\floor{\frac{n}{2}} + 1)^5 \sum_{\floor{\frac{n}{2}} + 1}^{n} 1 \\
+		&= (\floor{\frac{n}{2}} + 1)^5 (n-\floor{\frac{n}{2}} - 1 + 1) \\
+		&= (\floor{\frac{n}{2}} + 1)^5 (\ceil{\frac{n}{2}}) \\
+		&\geq (\frac{n}{2})^5 \frac{n}{2} \\
+		&= (\frac{n}{2})^6
+	\end{align*}
+	Hence, the tight bound is $(\frac{n}{2})^6 \leq \displaystyle\sum_{i=1}^{n}i^5 \leq n^6$. We get $\displaystyle\sum_{i=1}^{n}i^5 \in \Theta\left(n^{6}\right)$.
+\end{proof}
+
+
+\item [(5 points) 2.] Prove the theorem below using the techniques of \textbf{binding the term} and \textbf{splitting the sum} to find a tight bound for the sum.  Make sure your proof is complete, concise, clear and precise.
+
+\begin{theorem}
+\[
+\sum_{i=1}^{\log_2n}i \in \Theta\left((\log_2n)^2\right)
+\]
+\end{theorem}
+\begin{proof}
+	For the upper bound, we can replace $i$ with $\log_2n$:
+	
+	\begin{align*}
+		\sum_{i=1}^{\log_2n}\log_2n &= \log_2n \sum_{i=1}^{\log_2n}1 \\
+		&=\log_2n \cdot \log_2n \\
+		&= (\log_2n)^2
+	\end{align*}
+	For the lower bound, we need to split the sum first, $\displaystyle\sum_{i=1}^{\log_2n}i = \sum_{i=1}^{\floor{\frac{\log_2n}{2}}}i + \sum_{i=\floor{\frac{\log_2n}{2}} + 1}^{\log_2n}i$. Then we pick a half of the sum, and binding the term, replace $i$ with $\floor{\frac{\log_2n}{2}} + 1$:
+	\begin{align*}
+		\sum_{i=\floor{\frac{\log_2n}{2}} + 1}^{\log_2n} (\floor{\frac{\log_2n}{2}} + 1) &= (\floor{\frac{\log_2n}{2}} + 1) \cdot (\log_2n - \floor{\frac{\log_2n}{2}} - 1 + 1)\\
+		&= (\floor{\frac{\log_2n}{2}} + 1)(\ceil{\frac{\log_2n}{2}}) \\
+		&\geq (\frac{\log_2n}{2})(\frac{\log_2n}{2}) \\
+		&= (\frac{\log_2n}{2})^2
+	\end{align*}
+	Hence, the tight bound is $(\frac{\log_2n}{2})^2 \leq \sum_{i=1}^{\log_2n}i \leq (\log_2n)^2$. We get $\sum_{i=1}^{\log_2n}i \in \Theta\left((\log_2n)^2\right)$.
+\end{proof}
+
+\item [(5 points) 3.] Prove the theorem below using the techniques of \textbf{binding the term} and \textbf{splitting the sum} to find a tight bound for the sum.  Make sure your proof is complete, concise, clear and precise.
+
+\begin{theorem}
+\[
+\sum_{i=1}^{n}i^d \in \Theta\left(n^{d+1}\right)
+\]
+\end{theorem}
+\begin{proof}
+	For the upper bound, we can replace $i$ with $n$:
+	\begin{align*}
+		\sum_{i=1}^{n}n^d &= n^d \sum_{i=1}^{n}1 \\
+		&= n^d \cdot n \\
+		&= n^{d+1}
+	\end{align*}
+	For the lower bound, we need to split the sum first, $\displaystyle\sum_{i=1}^{n}i^d = \sum_{i=1}^{\floor{\frac{n}{2}}} i^d + \sum_{\floor{\frac{n}{2}} + 1}^{n}i^d$. Then we pick a half of the sum, and binding the term, replace $i$ with $\floor{\frac{n}{2}} + 1$:
+	
+	\begin{align*}
+		\sum_{\floor{\frac{n}{2}} + 1}^{n}(\floor{\frac{n}{2}} + 1)^d &= (\floor{\frac{n}{2}} + 1)^d\cdot (n - \floor{\frac{n}{2}} - 1 + 1) \\
+		&= (\floor{\frac{n}{2}} + 1)^d(\ceil{\frac{n}{2}}) \\
+		&\geq (\frac{n}{2})^d(\frac{n}{2}) \\
+		&= (\frac{n}{2})^{d+1}
+	\end{align*}
+	Hence, the tight bound is $(\frac{n}{2})^{d+1} \leq \sum_{i=1}^{n}i^d \leq n^{d+1}$. We get $\sum_{i=1}^{n}i^d \in \Theta\left(n^{d+1}\right)$.
+\end{proof}
+
+
+\item [(5 points) 4.] Prove the theorem below using the techniques of \textbf{binding the term} and \textbf{splitting the sum} to find a tight bound for the sum.  Make sure your proof is complete, concise, clear and precise.
+
+\begin{theorem}
+\[
+\sum_{i=1}^{\sqrt{n}}\sqrt{i} \in \Theta\left(n^{3/4}\right)
+\]
+\end{theorem}
+\begin{proof}
+	For the upper bound, we can replace $i$ with $\sqrt{n}$:
+	\begin{align*}
+		\sum_{i=1}^{\sqrt{n}}\sqrt{\sqrt{n}} &= \sum_{i=1}^{\sqrt{n}} n^{\frac{1}{4}} \\
+		&= n^{\frac{1}{4}} \cdot \sqrt{n} \\
+		&= n^{3/4}
+	\end{align*}
+	For the lower bound, we need to split the sum first, $\displaystyle\sum_{i=1}^{\sqrt{n}}\sqrt{i} = \sum_{i=1}^{\floor{\frac{\sqrt{n}}{2}}}\sqrt{i} + \sum_{\floor{\frac{\sqrt{n}}{2}} + 1}^{\sqrt{n}}\sqrt{i}$. Then we pick a half of the sum, and binding the term, replace $i$ with $\floor{\frac{\sqrt{n}}{2}} + 1$:
+	\begin{align*}
+		\sum_{\floor{\frac{\sqrt{n}}{2}} + 1}^{\sqrt{n}}\sqrt{\floor{\frac{\sqrt{n}}{2}} + 1} &= \sqrt{\floor{\frac{\sqrt{n}}{2}} + 1} \cdot (\sqrt{n} - \floor{\frac{\sqrt{n}}{2}} - 1 + 1) \\
+		&= \sqrt{\floor{\frac{\sqrt{n}}{2}} + 1} \cdot (\ceil{\frac{\sqrt{n}}{2}}) \\
+		&\geq \sqrt{\frac{\sqrt{n}}{2}} \cdot (\frac{\sqrt{n}}{2}) \\
+		&= (\frac{n}{2})^{3/4}
+	\end{align*}
+	Hence, the tight bound is $(\frac{n}{2})^{3/4} \leq \sum_{i=1}^{\sqrt{n}}\sqrt{i} \leq n^{3/4}$. We get $\sum_{i=1}^{\sqrt{n}}\sqrt{i} \in \Theta\left(n^{3/4}\right)$.
+\end{proof}
+
+
+\end{enumerate}
+
+\noindent\textbf{Grading} You will be docked points for errors in your math, disorganization, unclarity, or incomplete proofs. 
+
+\newpage
+
+\subsection{Challenge}
+
+In this problem you will prove there is a function that is in O$(n^3)$ and $\Omega(n)$ but is not in $\Theta(n^d)$ for any $1\leq d\leq 3$.  
+\begin{enumerate}
+\item [(2 points) 1.] State a function $f(n)$ that is in O$(n^3)$ and $\Omega(n)$ but is not in $\Theta(n^d)$ for any $1\leq d\leq 3$.
+
+$n^{\sin n}$
+
+\item [(2 points) 2.] Prove that $f(n) \in $O$(n^3)$.
+\begin{proof}
+	Since we know the value of $\sin n$ must be between $-1$ and $1$. Because $1 < 3$, $n^3$ is already a upper bound of $n^{\sin n}$. By the definition of Big-O, we can conclude that $f(n) \in $O$(n^3)$.
+\end{proof}
+
+\item [(2 points) 3.] Prove that $f(n) \in \Omega(n)$.
+\begin{proof}
+	Again, since the value of $\sin n$ is between $-1$ and $1$.
+\end{proof}
+
+\item [(4 points) 4.] Prove that $f(n) \not\in \Theta(n^d)$  for any $1\leq d\leq 3$.
+
+Because for $\Theta(n)$, we can find a lower bound for it, but we can't find a upper bound. For $\Theta(n^3)$, there are upper bounds, but we can't find a proper lower bound. By the definition of $\Theta$, you need to find a upper bound and lower bound at the same time for a specific $n^d$. Because the graph is oscillating, there exits upper bound and lower bound, but it's just not possible for a single $n^d$ to cover up both bounds.
+\end{enumerate}
+
+\noindent\textbf{Grading} Correctness and precision are of utmost importance.  Use formal proof structure for big-Oh, big-Omega and big-Theta bounds.  You will be docked points for errors in your math, disorganization, unclarity, or incomplete proofs.    
+%%% End document
+
+\end{document}

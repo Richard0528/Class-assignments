@@ -1,0 +1,70 @@
+/**
+ * 
+ */
+package model;
+
+import java.util.Map;
+
+/**
+ * Represents a Car.
+ * 
+ * @author richardyang
+ * @version 10.27
+ */
+public final class Car extends AbstractVehicle {
+    
+    /** . */
+    private static final int CAR_DEATH_TIME = 5;
+    
+    /**
+     * Initializes the instance fields.
+     * 
+     * @param theX the coordinate x of the Car
+     * @param theY the coordinate y of the Car
+     * @param theDir the direction of the Car
+     */
+    public Car(final int theX, final int theY, final Direction theDir) {
+        super(theX, theY, theDir, CAR_DEATH_TIME);
+    }
+
+    @Override
+    public boolean canPass(final Terrain theTerrain, final Light theLight) {
+        
+        boolean result = false;
+        
+        if (theTerrain == Terrain.STREET 
+                        || (theTerrain == Terrain.LIGHT && theLight != Light.RED)
+                        || (theTerrain == Terrain.CROSSWALK 
+                        && theLight == Light.GREEN)) {
+            result = true;
+        }
+        
+        return result;
+    }
+
+    @Override
+    public Direction chooseDirection(final Map<Direction, Terrain> theNeighbors) {
+        
+        final Direction result;
+        
+        if (theNeighbors.get(getDirection()) == Terrain.STREET 
+                        || theNeighbors.get(getDirection()) == Terrain.CROSSWALK
+                        || theNeighbors.get(getDirection()) == Terrain.LIGHT) {   
+            result = getDirection();
+        } else if (theNeighbors.get(getDirection().left()) == Terrain.STREET 
+                        || theNeighbors.get(getDirection().left()) == Terrain.CROSSWALK
+                        || theNeighbors.get(getDirection().left()) == Terrain.LIGHT) {
+            result = getDirection().left();
+        } else if (theNeighbors.get(getDirection().right()) == Terrain.STREET 
+                        || theNeighbors.get(getDirection().right()) == Terrain.CROSSWALK
+                        || theNeighbors.get(getDirection().right()) == Terrain.LIGHT) {
+            result = getDirection().right();
+        } else {
+            result = getDirection().reverse();
+        }
+        
+        return result;
+    }
+    
+    
+}

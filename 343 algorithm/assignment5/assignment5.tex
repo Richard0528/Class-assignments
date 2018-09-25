@@ -1,0 +1,333 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LaTeX Example: Project Report
+%
+% Source: http://www.howtotex.com
+%
+% Feel free to distribute this example, but please keep the referral
+% to howtotex.com
+% Date: March 2011 
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% How to use writeLaTeX: 
+%
+% You edit the source code here on the left, and the preview on the
+% right shows you the result within a few seconds.
+%
+% Bookmark this page and share the URL with your co-authors. They can
+% edit at the same time!
+%
+% You can upload figures, bibliographies, custom classes and
+% styles using the files menu.
+%
+% If you're new to LaTeX, the wikibook is a great place to start:
+% http://en.wikibooks.org/wiki/LaTeX
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Edit the title below to update the display in My Documents
+%\title{343 Assignment 5}
+%
+%%% Preamble
+\documentclass[paper=a4, fontsize=11pt]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage{fourier}
+
+\usepackage[english]{babel}															% English language/hyphenation
+\usepackage[protrusion=true,expansion=true]{microtype}	
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage{mathtools}
+\usepackage[pdftex]{graphicx}	
+\usepackage{url}
+\usepackage{ulem}
+
+
+\newtheorem{theorem}{Theorem}
+
+%%% Custom sectioning
+\usepackage{sectsty}
+\allsectionsfont{\centering \normalfont\scshape}
+
+
+%%% Custom headers/footers (fancyhdr package)
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+\fancyhead{}											% No page header
+\fancyfoot[L]{}											% Empty 
+\fancyfoot[C]{}											% Empty
+\fancyfoot[R]{\thepage}									% Pagenumbering
+\renewcommand{\headrulewidth}{0pt}			% Remove header underlines
+\renewcommand{\footrulewidth}{0pt}				% Remove footer underlines
+\setlength{\headheight}{13.6pt}
+\newcommand\tab[1][0.6cm]{\hspace*{#1}}
+
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+
+%%% Equation and float numbering
+\numberwithin{equation}{section}		% Equationnumbering: section.eq#
+\numberwithin{figure}{section}			% Figurenumbering: section.fig#
+\numberwithin{table}{section}				% Tablenumbering: section.tab#
+
+
+%%% Maketitle metadata
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} 	% Horizontal rule
+
+\title{
+		%\vspace{-1in} 	
+		\usefont{OT1}{bch}{b}{n}
+		\normalfont \normalsize \textsc{Institute of Technology} \\ [25pt]
+		\horrule{0.5pt} \\[0.4cm]
+		\huge TCSS 343 - Assignment 5\\
+		\horrule{2pt} \\[0.5cm]
+}
+\author{
+		\normalfont 								\normalsize
+        Version 1.0 \\
+}
+
+
+%%% Begin document
+\begin{document}
+\maketitle
+
+\section{Guidelines}
+Homework should be electronically submitted to the instructor by midnight on the due date.  A submission link is provided on the course Canvas Page.  The submitted document should be typeset using any common software and submitted as a PDF.  We strongly recommend using \LaTeX\;  to prepare your solution.  You could use any \LaTeX\; tools such as Overleaf, ShareLatex, TexShop etc. Scans of handwritten/hand drawn solutions are acceptable, but you will be docked 1 point per problem if the handwritting is unclear.
+
+Each problem is worth a total of 10 points.  Solutions receiving 10 points must be correct (no errors or omissions), clear (stated in a precise and concise way), and have a well organized presentation.  Show your work as partial points will be awarded to rough solutions or solutions that make partial progress toward a correct solution.
+
+\textbf{Remember to cite} all sources you use other than the text, course material or your notes.
+
+\newpage
+\section{Problems}
+
+\subsection{Understand}
+You and your friends are driving to Tijuana for spring break.  You discover that you are bringing a lot of gear, luggage, and people and may have to take multiple cars.  You have $n$ items you want to bring.  Each item weighs between 1 pound and 1000 pounds.  Each car can hold at most 1000 pounds.  You want to determine how to assign items to cars so that you use the minimum number of cars.
+\begin{enumerate}
+\item (4 points) State the input and output conditions for this problem as precisely as possible.
+
+\textbf{Answer:}
+
+CarAmount
+
+Input: $A[1 \dots n]$, a list of item weighs between 1 and 100
+
+Output: $n$, the minimum number of cars need to carry all the item weighs, such that $1000n \geq sum(A[1\dots n])$.
+
+
+\item (4 points) If you have $n$ items what is the maximum number of cars you will need?  If you have $n$ items what is a lower bound on the minimum number of cars you will need?
+
+\textbf{Answer:}
+
+If you have $n$ items,
+
+The maximum number of cars is $\frac{1000n}{1000} = n$.
+
+The lower bound of on the minimum number of cars is $\ceil{\frac{1}{1000} \displaystyle\sum_{i\in N}^n W[i]}$. $N$ stands for Item set and $W$ stands for the corresponding weight set.
+
+
+\item (6 points) Your friend Alice has a plan to pack the cars.  She suggests placing each item in the first car that it will fit in.  She calls this the first-fit algorithm.  Come up with a counter example to show this algorithm will not produce the least number of cars.
+
+\textbf{Answer:}
+
+Items: $\{400,500,600,500\}$.
+
+If we use the first-fit algorithm, the first two items will be put in the first car; the second item will be put in the second car; and the third item will be put in the third car. However, we can actually put the second and the forth item in the first car; the first and the third item to the second car. Then all we need is two cars instead of three cars.
+
+
+
+\item (6 points) Your friend Bob has a plan to pack the cars.  He suggests placing each item in the car it fits best in.  He thinks an item fits best in a car if it leaves the car with the least amount of free space.  He calls this the best-fit algorithm.  Come up with a counter example to show this algorithm will not produce the least number of cars.
+
+\textbf{Answer:}
+
+Items: $\{600,700,100,300,300\}$.
+
+If we use the best-fit algorithm, the first items will be put in the first car; the second item will be put in the second car; the third item will be put in the second car; the forth item will be put in the first car; and the fifth item will be put in the third car. However, we can put the third item in the first car after the first and second item was put. Then we can put the forth item in the first car and the fifth item in the second car. In this way, we just need two cars instead of three cars.
+
+
+
+
+
+\end{enumerate}
+
+\noindent\textbf{Grading} You will be docked points for errors in your counter examples or a failure to show how the algorithm fails. 
+
+\subsection{Explore}
+You have two sets of positive integers $A = \{a_1, ..., a_n\}$ and $B = \{b_1,...,b_n\}$.  You want to place these sets in order to compute this sum so that it is as large as possible.
+\[
+\sum_{i=1}^n a_i\cdot b_i
+\]
+\begin{enumerate}
+\item (4 points) What is the best ordering for these sets to maximize the sum?
+\[
+A = \{10, 100, 1, 1000\}
+\]
+\[
+B = \{12, 42, 8, 16\}
+\]
+
+\textbf{Answer:}
+\[
+A = \{1000, 100, 10, 1\}
+\]
+\[
+B = \{42, 16, 12, 8\}
+\]
+\[
+\sum_{i=1}^n a_i\cdot b_i = 1000*42 + 100*16 + 10*12 + 8 = 43728
+\]
+
+
+\item (4 point) What order should you place the sets in to maximize this sum?
+
+\textbf{Answer:}
+
+We should place both sets in descending or ascending order at the same time to maximize the sum.
+
+
+\item (12 points) Prove your ordering is correct for any two sets $A$ and $B$ of size $n$.
+\end{enumerate}
+
+\begin{theorem}
+	If we placed both sets in descending or ascending order, then the sum is maximized.
+\end{theorem}
+
+\begin{proof}
+Let $S$ be the ordering from my algorithm and $O$ be the optimal ordering solution. Every element in $S$ is a pair of two elements, one from A and another one from B correspondingly. Let the both solutions be in descending order.
+
+Assume $S_i \neq O_i$, let $S_1$ and $O_1$ be the first pair for my ordering and optimal ordering. Since we know $S_1 = a_1*b_1$ where $a_1$ and $b_1$ are both maximal, $O_1 = a_1 * b_k$ for some valid $b_k \in B$ such that $b_k < b_1$ because $b_1$ is the maximal. $O_1$ does not multiply $b_1$ with $a_1$, there exists $b_1 * a_j \in O_i$ for some $a_j \in A$ and $a_j < a_1$. 
+
+To make them easier to compare, we will modify the optimal ordering solution, 
+
+\noindent
+$O = a_1*b_k + a_j*b_1 + \dots$ into $O' = a_1*b_1 + a_j*b_k + \dots$. Noticed that the result of $O$ should be greater than $O'$ because $O$ is the optimal ordering solution by design. $O'$ here is exactly the set $S$. The difference between $O$ and $O'$ is $a_1*b_k + a_j*b_1 - a_1*b_1 + a_j*b_k + \dots = (b_k - b_1)(a_1-a_k) + \dots$. $b_k - b_1$ is negative because $b_1 > b_k$ and $a_1 - a_k$ is positive. So the difference is actually negative, which means that $O' > O$. Hence the contradiction.
+\end{proof}
+
+
+
+
+\noindent\textbf{Grading} You will be docked points for errors in your math, disorganization, unclarity, or incomplete proofs. 
+
+\subsection{Expand}
+A set of Pokemon cards consists of $n$ different cards.  The cards are sold as different sized randomly selected packs.  Each pack is a subset of the set of Pokemon cards.  There are $m$ such packs.  You happen to know which cards were placed in which packs.  You want to select a minimum set of packs such that you will get at least one of every every card in the set.
+\begin{enumerate}
+\item (4 point) Express this problem (Pokemon) formally with input and output conditions as a \textit{decision problem}.
+
+\textbf{Answer:}
+
+Pokemon
+
+Input: $C[1\dots n]$, a set of Pokemon cards consists of $n$ different cars, and $P[1\dots m]$, $m$ such packs which each pack is subsets of the set of Pokemon cards, and $k$ numbers of packs selected.
+
+Output: 'Yes', if we can get a whole set of Pokemon cards with selected packs and it's less than and equal to $k$. Otherwise, 'no'.
+
+\item Show this problem is in NP.
+\begin{enumerate}
+\item (4 points) Give a verification algorithm for this problem. 
+
+PCVerifier(C, P, k, W)
+
+\tab if $|W| > k$, say 'no';
+
+\tab if $W$ is not a subset of $P$, say 'no';
+
+\tab if $\exists C_i \in C$ such that $C_i \not\subseteq \bigcup_{j \in W} j$, say 'no';
+
+\tab say 'yes';
+
+EndPCVerifier
+
+
+\item (4 points) Prove your algorithm is correct.
+\begin{proof}
+	
+	\
+	
+	'yes' $\Rightarrow$ 'yes'
+	
+	Assume there is some $W \subseteq P$ such that $|W| \leq k$ and $C \subseteq \bigcup_{i \in W} i$. Let $W$ be the proof. So $W$ passes all three tests and we say 'yes'.
+	
+	'no' $\Rightarrow$ 'no'
+	
+	Assume there is no $W \subseteq P$ such that $|W| \leq k$ and $C \subseteq \bigcup_{i \in W} i$. 
+	
+	Then there exists $W \subseteq P$ and $C \subseteq \bigcup_{i \in W} i$, so $|W| > k$ and we say 'no'.
+\end{proof}
+
+
+\end{enumerate}
+\item The Vertex Cover problem is already known to be NP-complete.  We can show that Pokemon is NP-complete by reducing Vertex Cover to Pokemon. 
+\begin{enumerate}
+\item (4 points) Give a reduction from Vertex Cover to Pokemon.  The reduction takes input to Vertex Cover and converts it into input to Pokemon. 
+
+$VC \leq_p Pokemon$
+
+Reduction $m(G=(V,E) , k)$
+
+\tab For each edge in $E$, create a pokemon card;
+
+\tab For each vertex in $V$, create a pack of cards which each pack represents all the edges connected to this vertex;
+
+\tab Let $k' = k$;
+
+return $(C, P, k')$
+
+
+\item (4 points) Prove your reduction is correct.
+\begin{proof}
+	
+	\
+	
+	'yes' $\Rightarrow$ 'yes'
+	
+	Assume $G$ has a vertex cover of size $k$. Consider a subset of vertices of size $k$ that covers all edges. Let each edge represents a pokemon card and each vertex represents a pack of cards. So we can translate the previous statement as 'there exists k' packs of cards that cover all the pokemon cards'.
+	
+	'yes' $\Leftarrow$ 'yes'
+	
+	Assume there are $k'$ packs of cards that contains all the pokemon cards. Let each pokemon card be an edge and each pack of cards be a vertex. There is a subset of vertices of size $k$ that covers all the edges.
+\end{proof}
+
+
+\end{enumerate}
+\end{enumerate}
+
+\noindent\textbf{Grading} You will be docked points for errors in your math, disorganization, unclarity, or incomplete proofs. 
+
+\subsection{Challenge}
+Recall your trip to Tijuana from the first problem.  After proving Alice and Bob wrong they are convinced their algorithms are not that bad.  They have researched \textit{approximation algorithms} and want your help to prove their algorithms are approximately correct.
+
+\begin{enumerate}
+\item (1 point) Restate the lower bound on the number of cars needed to pack your $n$ items.
+
+The lower bound is $\ceil{\frac{1}{1000} \displaystyle\sum_{i\in N}^n W[i]}$.
+
+\item (2 points) Prove that the first-fit algorithm will never leave more than one car less than half full.
+\begin{proof}
+	When we put the first item in the car, consider two cases:
+	\begin{enumerate}
+		\item The first car is more than a half after the first item. We really don't have much things to do for this case. For next item, we either put it in the first car or put it in the second car.
+		
+		\item The first car is less than a half after the first item. Now we need to put in the second item. If the second item is less than or equal to a half, we are going to put the second item in the first car; if the second item is greater than a half, we probably can put it in the first car depends on how many space left or we need another car.
+	\end{enumerate}
+
+So we are using the first-fit algorithm, if the algorithm lefts two cars less than half full, this is just impossible because the item in the second car will be put in the first car based on the algorithm. 
+\end{proof}
+
+\item (2 points) Prove that the best-fit algorithm will never leave more than one car less than half full.
+\begin{proof}
+	For this proof, it will be very similiar to the previous proof. Assume the algorithm left us two cars less than half full. This is just simply impossible. Based on the best-fit algorithm, the item in the second car must be put into the first car because the algorithm says that an item fits best in a car if it leaves the car with the least amount of free space.
+\end{proof}
+
+\item (5 points) Prove that if an algorithm never leaves more than one car less than half full that it will never use more than twice as many cars as is used by an optimal solution.
+\begin{proof}
+	So, we have a lower bound from part 1, $\ceil{\frac{1}{1000} \displaystyle\sum_{i\in N}^n W[i]}$. That should be the least number of cars possible for our algorithm. It can't be less than the lower bound. 
+	
+	Consider the worst case scenario, we left one of the cars less than half full and other cars have exactly a half free spaces. The algorithm should leaves cars more than or equal to half full except one. When we keep putting in items weighted 500 pounds, it's going to use a new car every time we put in the next item. The cars we are going to use should be $\ceil{\frac{1}{500} \displaystyle\sum_{i\in N}^n W[i]} = 
+	2\ceil{\frac{1}{1000} \displaystyle\sum_{i\in N}^n W[i]}$, which is exactly twice as many cars as the lower bound, AKA the best possible solution.
+	
+\end{proof}
+
+
+
+\end{enumerate}
+
+\noindent\textbf{Grading} You will be docked points for errors in your math, disorganization, unclarity, or incomplete proofs. 
+\end{document}

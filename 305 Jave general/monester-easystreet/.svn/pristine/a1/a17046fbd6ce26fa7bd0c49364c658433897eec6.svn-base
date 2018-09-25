@@ -1,0 +1,83 @@
+/**
+ * 
+ */
+package model;
+
+import java.util.Map;
+
+/**
+ * Represents a Taxi.
+ * 
+ * @author richardyang
+ * @version 10.22
+ */
+public final class Taxi extends AbstractVehicle {
+
+    /** . */
+    private static final int TAXI_DEATH_TIME = 5;
+    
+    /** . */
+    private static final int TAXI_CLOCK_MAX = 3;
+    
+    /** . */
+    private int myTaxiClock;
+    
+    /**
+     * Initializes the instance fields.
+     * 
+     * @param theX the coordinate x of the Taxi
+     * @param theY the coordinate y of the Taxi
+     * @param theDir the direction of the Taxi
+     */
+    public Taxi(final int theX, final int theY, final Direction theDir) {
+        super(theX, theY, theDir, TAXI_DEATH_TIME);
+    }
+    
+    @Override
+    public boolean canPass(final Terrain theTerrain, final Light theLight) {
+        
+        boolean result = false;
+        
+        if ((theTerrain == Terrain.STREET 
+                        || ((theTerrain == Terrain.CROSSWALK
+                        || theTerrain == Terrain.LIGHT) && theLight != Light.RED)) 
+                        && myTaxiClock == 0) {
+            result = true;
+        } else if (theTerrain == Terrain.CROSSWALK && theLight == Light.RED) {
+            myTaxiClock++;
+            result = false;
+            if (myTaxiClock == TAXI_CLOCK_MAX + 1) {
+                myTaxiClock = 0;
+                result = true;
+            }
+        }
+        
+        return result;
+    }
+
+    @Override
+    public Direction chooseDirection(final Map<Direction, Terrain> theNeighbors) {
+        
+        final Direction result;
+        
+        if (theNeighbors.get(getDirection()) == Terrain.STREET 
+                        || theNeighbors.get(getDirection()) == Terrain.CROSSWALK
+                        || theNeighbors.get(getDirection()) == Terrain.LIGHT) {   
+            result = getDirection();
+        } else if (theNeighbors.get(getDirection().left()) == Terrain.STREET 
+                        || theNeighbors.get(getDirection().left()) == Terrain.CROSSWALK
+                        || theNeighbors.get(getDirection().left()) == Terrain.LIGHT) {
+            result = getDirection().left();
+        } else if (theNeighbors.get(getDirection().right()) == Terrain.STREET 
+                        || theNeighbors.get(getDirection().right()) == Terrain.CROSSWALK
+                        || theNeighbors.get(getDirection().right()) == Terrain.LIGHT) {
+            result = getDirection().right();
+        } else {
+            result = getDirection().reverse();
+        }
+        
+        return result;
+    }    
+
+
+}

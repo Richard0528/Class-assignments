@@ -1,0 +1,357 @@
+package mysetpackage;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public abstract class AbstractLinkedSet<Type> implements MySet<Type> {
+
+	/**
+     * Reference to the first node in the list.
+     */
+    protected ListNode<Type> front; 
+    
+    /**
+     * Reference to the last node in the list.
+     */
+    protected ListNode<Type> back;
+
+    /**
+     * Constructs an empty list.
+     */
+    public AbstractLinkedSet() {
+        front = null;
+        back = null;
+//        size = -1;
+    }
+
+    /**
+     * @see mylistpackage.MyList#getSize()
+     */
+    @Override
+    public int getSize() {
+    		ListNode<Type> temp = front;
+    		int count = 0;
+    		if (isEmpty()) {
+    			return 0;
+    		}
+    		while (temp != back) {
+    			count++;
+    			temp = nodeAt(count);
+    		}
+    	
+        return count + 1;
+    }
+
+    /**
+     * @see mylistpackage.MyList#isEmpty()
+     */
+    @Override
+    public boolean isEmpty() {
+        return front == null && back == null;
+    }
+
+    /**
+     * @see mylistpackage.MyList#contains(java.lang.Object)
+     */
+    @Override
+    public boolean contains(Type value) {
+        return getIndex(value) >= 0;
+    }
+
+    /**
+     * @see mylistpackage.MyList#clear()
+     */
+    @Override
+    public void clear() {
+        front = null;
+        back = null;
+//        size = -1;
+    }
+
+
+    /**
+     * Creates a comma-separated, bracketed version of the list.
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        if (front == null && back == null) {
+            return "[]";
+        } else {
+            String result = "[" + front.data;
+            ListNode<Type> current = front.next;
+            while (current != front) {
+                result += ", " + current.data;
+                current = current.next;
+            }
+            result += "]";
+            return result;
+        }
+    }
+    
+    /**
+     * @see mylistpackage.MyList#remove(java.lang.Object)
+     */
+    @Override
+    public void remove(Type value) {
+    	if (front != null) {				    // if the list is not empty
+    		if (value.equals(front.data)) {                 // if value in the first node
+    			if (front == back) {	    // if it was the only node
+    				front = null;
+    				back = null;
+    			} else {
+    				front = front.next;
+    				back.next = front;
+    			}
+    		}
+    		else {					   // value not in the first node
+    			ListNode<Type> prior = front;	           // set up a trailing reference
+    			while (prior.next != front) {               // look ahead one node
+
+    				if (prior.next.data.equals(value)) {   // found it
+    					prior.next = prior.next.next;
+    					if (prior.next == front)            // if deleting the last node
+    						back = prior;
+    				} //endif
+    				prior = prior.next;
+    			} //endwhile
+    		} // endelse
+    	}
+    }
+    
+    /*********************************************
+     * Index list methods follow
+     *********************************************/
+
+    /**
+     * Returns the index of value.
+     * 
+     * @param value assigned.
+     * @return index of value if in the list, -1 otherwise.
+     */
+    public int getIndex(Type value) {
+        int index = 0;
+        ListNode<Type> current = front;
+        if (front == null) {
+        		return -1;
+        }
+        while (current != back) {
+            if (current.data.equals(value)) {
+                return index;
+            }
+            index++;
+            current = current.next;
+        }
+        if (current.data.equals(value)) {
+        		return index;
+        }
+        return -1;
+    }
+    
+    /**
+     * Removes value at the given index, shifting subsequent values up.
+     * 
+     * @param index < length and index >= 0
+     * @throws IndexOutOfBoundsException if index < 0 or index >= length
+     */
+    @Override
+    public void removeAtIndex(int index) {
+        checkIndex(index);
+        if (index == 0) {		// special case for the first node
+            if (front == back) {		// if this is also the only node
+            		front = null;
+            		back = null;
+            } else {
+            		front = front.next;
+            		back.next = front;
+            }
+ 
+        }
+        else {				// if the value not in the first node
+            ListNode<Type> prior = nodeAt(index - 1);   // find the reference to the prior node
+            prior.next = prior.next.next;	     // unlink
+            if (prior.next == front)		     // if it is the last node
+                back = prior;
+        }
+        
+//        size--;
+    }
+    
+
+    
+    /**
+     * Returns the value at the given index in the list.
+     * 
+     * @param 0 <= index < length
+     * @throws IndexOutOfBoundsException if index < 0 or index >= length
+     * @return the value at the given index in the list.
+     */
+    public Type get(int index) {
+        checkIndex(index);
+        ListNode<Type> current = nodeAt(index);
+        return current.data;
+    } 
+
+    /**
+     * Returns the node at a specific index.
+     * @param index where 0 <= index <= size
+     * @return reference to the node at a specific index
+     */
+    protected ListNode<Type> nodeAt(int index) {
+        ListNode<Type> current = front;
+        for (int i = 1; i <= index; i++) {
+        	current = current.next;
+        }
+        return current;
+    }
+
+    
+    /**
+     * Checks if the index is a legal index of the current list.
+     * @param index
+     * @throws IndexOutOfBoundsException if the given index is not a legal index of the current list
+     */
+    protected void checkIndex(int index) {
+        if (index < 0 || index > getSize() - 1) {
+            throw new IndexOutOfBoundsException("index: " + index);
+        }
+    }
+    
+    /*********************************************
+     * Index list methods end
+     *********************************************/
+
+    /*********************************************
+     * Iterator list class / methods follow
+     *********************************************/
+    
+    /**
+     * Returns an iterator for this list.
+     * 
+     * @return an iterator for the list.
+     */
+    @Override
+    public Iterator<Type> iterator() {
+        return new LinkedIterator();
+    }
+
+    /**
+     * Represents a list node.
+     * @author Building Java Programs 3rd ed.
+     *
+     * @param <E> is of any object type
+     */
+    protected static class ListNode<Type> {
+
+        /**
+         * Data stored in this node.
+         */
+        public Type data; 
+
+        /**
+         * Link to next node in the list.
+         */
+        public ListNode<Type> next;  
+       
+        /**
+         * Constructs a node with given data and a null link.
+         * @param data assigned
+         */
+        public ListNode(Type data) {
+            this(data, null);
+        }
+
+        /**
+         * Constructs a node with given data and given link.
+         * @param data assigned
+         * @param next assigned
+         */
+        public ListNode(Type data, ListNode<Type> next) {
+            this.data = data;
+            this.next = next;
+        }
+    }
+
+    /**
+     * Represents an iterator for the list.
+     * 
+     * @author modified from BuildingJavaPrograms 3rd Edition
+     */
+    private class LinkedIterator implements Iterator<Type> {
+        
+        /**
+         * Location of current value to return.
+         */
+        private ListNode<Type> current; 
+
+        /**
+         * flag that indicates whether list element can be removed.
+         */
+        private boolean removeOK; 
+        
+        /**
+         * Location of the prior value in case of removal.
+         */
+        private ListNode<Type> prior;
+        
+        /**
+         * Recording the nodes.
+         */
+        private int nextIndex;
+
+        /**
+         * Constructs an iterator for the given list.
+         */
+        public LinkedIterator() {
+            current = front;
+            removeOK = false;
+            prior = null;
+        }
+
+        /**
+         * Returns whether there are more list elements.
+         * 
+         * @return true if there are more elements left, false otherwise
+         * @see java.util.Iterator#hasNext()
+         */
+        public boolean hasNext() {
+            return nextIndex < getSize();
+        }
+
+        /**
+         * Returns the next element in the iteration.
+         * 
+         * @throws NoSuchElementException if no more elements.
+         * @return the next element in the iteration.
+         * @see java.util.Iterator#next()
+         */
+        public Type next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+//            System.out.println(current.data);
+            prior = current;
+            Type result = current.data;
+            current = current.next;
+            removeOK = true;
+            nextIndex++;
+            return result;
+        }
+
+        /**
+         * Removes the last element returned by the iterator.
+         * 
+         * @throws IllegalStateException if a call to next has not been made
+         *             before call to remove.
+         * @see java.util.Iterator#remove()
+         */
+        public void remove() {
+            if (!removeOK) {
+                throw new IllegalStateException();
+            }
+            AbstractLinkedSet.this.remove(prior.data);
+            removeOK = false;
+        }
+    }
+}
